@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView
 from .models import Survey, Response, Answer, Choice
 from .forms import SurveyResponseForm
 

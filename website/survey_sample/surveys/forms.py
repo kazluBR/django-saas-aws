@@ -1,5 +1,4 @@
 from django import forms
-from .models import Answer, Question
 
 class SurveyResponseForm(forms.Form):
     respondent_email = forms.EmailField(required=False, label="Email (optional)")

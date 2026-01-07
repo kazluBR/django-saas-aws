@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import User
 
 class Survey(models.Model):
     title = models.CharField(max_length=200)
@@ -23,6 +22,7 @@ class Question(models.Model):
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE, related_name='questions')
     text = models.CharField(max_length=500)
     question_type = models.CharField(max_length=10, choices=QUESTION_TYPES, default='text')
+    image = models.ImageField(upload_to='question_images/', blank=True, null=True)
     order = models.IntegerField(default=0)
     is_required = models.BooleanField(default=True)
     
@@ -35,6 +35,7 @@ class Question(models.Model):
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='choices')
     text = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='choice_images/', blank=True, null=True)
     order = models.IntegerField(default=0)
     
     def __str__(self):

@@ -5,10 +5,15 @@
     <style>
         body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
         .question { margin: 30px 0; padding: 20px; background: #f9f9f9; border-radius: 5px; }
+        .question-image { max-width: 100%; height: auto; margin: 15px 0; border-radius: 5px; }
         label { display: block; margin: 10px 0 5px 0; font-weight: bold; }
         input[type="text"], textarea { width: 100%; padding: 8px; margin: 5px 0; box-sizing: border-box; }
         input[type="radio"] { margin-right: 5px; }
-        .radio-option { margin: 10px 0; }
+        .radio-option { margin: 10px 0; padding: 10px; display: flex; align-items: center; 
+                        border: 2px solid #ddd; border-radius: 5px; cursor: pointer; }
+        .radio-option:hover { background: #f0f0f0; border-color: #007bff; }
+        .choice-image { max-width: 150px; height: 100px; object-fit: cover; margin-left: 10px; 
+                        border-radius: 3px; }
         .btn { background: #28a745; color: white; padding: 12px 30px; border: none; 
                border-radius: 3px; cursor: pointer; font-size: 16px; }
         .btn:hover { background: #218838; }
@@ -18,7 +23,7 @@
     <h1>{{ survey.title }}</h1>
     <p>{{ survey.description }}</p>
     
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         
         <div class="question">
@@ -26,24 +31,37 @@
             {{ form.respondent_email }}
         </div>
         
-        {% for field in form %}
-            {% if 'question_' in field.name %}
+        {% for question in survey.questions.all %}
             <div class="question">
-                <label>{{ field.label }}</label>
-                {% if field.field.widget.input_type == 'radio' %}
-                    {% for choice in field %}
+                <label>{{ question.text }}</label>
+                
+                {% if question.image %}
+                    <img src="{{ question.image.url }}" alt="Question image" class="question-image">
+                {% endif %}
+                
+                {% if question.question_type == 'text' %}
+                    <textarea name="question_{{ question.id }}" rows="3" style="width: 100%; padding: 8px;" {% if question.is_required %}required{% endif %}></textarea>
+                
+                {% elif question.question_type == 'choice' %}
+                    {% for choice in question.choices.all %}
                     <div class="radio-option">
-                        {{ choice }}
+                        <input type="radio" name="question_{{ question.id }}" value="{{ choice.id }}" id="choice_{{ choice.id }}" {% if question.is_required %}required{% endif %}>
+                        <label for="choice_{{ choice.id }}" style="margin: 0; flex-grow: 1; cursor: pointer;">{{ choice.text }}</label>
+                        {% if choice.image %}
+                            <img src="{{ choice.image.url }}" alt="{{ choice.text }}" class="choice-image">
+                        {% endif %}
                     </div>
                     {% endfor %}
-                {% else %}
-                    {{ field }}
-                {% endif %}
-                {% if field.errors %}
-                    <p style="color: red;">{{ field.errors }}</p>
+                
+                {% elif question.question_type == 'rating' %}
+                    {% for i in "12345" %}
+                    <div class="radio-option" style="display: inline-block; width: auto; margin-right: 10px;">
+                        <input type="radio" name="question_{{ question.id }}" value="{{ i }}" id="rating_{{ question.id }}_{{ i }}" {% if question.is_required %}required{% endif %}>
+                        <label for="rating_{{ question.id }}_{{ i }}" style="margin: 0; cursor: pointer;">{{ i }}</label>
+                    </div>
+                    {% endfor %}
                 {% endif %}
             </div>
-            {% endif %}
         {% endfor %}
         
         <button type="submit" class="btn">Submit Survey</button>
