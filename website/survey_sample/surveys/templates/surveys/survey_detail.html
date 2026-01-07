@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ survey.title }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
+        .question { margin: 30px 0; padding: 20px; background: #f9f9f9; border-radius: 5px; }
+        label { display: block; margin: 10px 0 5px 0; font-weight: bold; }
+        input[type="text"], textarea { width: 100%; padding: 8px; margin: 5px 0; box-sizing: border-box; }
+        input[type="radio"] { margin-right: 5px; }
+        .radio-option { margin: 10px 0; }
+        .btn { background: #28a745; color: white; padding: 12px 30px; border: none; 
+               border-radius: 3px; cursor: pointer; font-size: 16px; }
+        .btn:hover { background: #218838; }
+    </style>
+</head>
+<body>
+    <h1>{{ survey.title }}</h1>
+    <p>{{ survey.description }}</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="question">
+            <label for="id_respondent_email">{{ form.respondent_email.label }}</label>
+            {{ form.respondent_email }}
+        </div>
+        
+        {% for field in form %}
+            {% if 'question_' in field.name %}
+            <div class="question">
+                <label>{{ field.label }}</label>
+                {% if field.field.widget.input_type == 'radio' %}
+                    {% for choice in field %}
+                    <div class="radio-option">
+                        {{ choice }}
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    {{ field }}
+                {% endif %}
+                {% if field.errors %}
+                    <p style="color: red;">{{ field.errors }}</p>
+                {% endif %}
+            </div>
+            {% endif %}
+        {% endfor %}
+        
+        <button type="submit" class="btn">Submit Survey</button>
+    </form>
+</body>
+</html>

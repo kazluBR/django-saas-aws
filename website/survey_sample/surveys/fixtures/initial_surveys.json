@@ -1,0 +1,288 @@
+[
+  {
+    "model": "surveys.survey",
+    "pk": 1,
+    "fields": {
+      "title": "Customer Satisfaction Survey",
+      "description": "Help us improve our service by sharing your experience with us.",
+      "is_active": true,
+      "created_at": "2024-01-15T10:00:00Z"
+    }
+  },
+  {
+    "model": "surveys.survey",
+    "pk": 2,
+    "fields": {
+      "title": "Employee Engagement Survey",
+      "description": "Your feedback helps us create a better workplace for everyone.",
+      "is_active": true,
+      "created_at": "2024-01-16T10:00:00Z"
+    }
+  },
+  {
+    "model": "surveys.survey",
+    "pk": 3,
+    "fields": {
+      "title": "Product Feedback Survey",
+      "description": "Tell us what you think about our latest product release.",
+      "is_active": true,
+      "created_at": "2024-01-17T10:00:00Z"
+    }
+  },
+  {
+    "model": "surveys.question",
+    "pk": 1,
+    "fields": {
+      "survey": 1,
+      "text": "How would you rate your overall experience with our service?",
+      "question_type": "rating",
+      "order": 1,
+      "is_required": true
+    }
+  },
+  {
+    "model": "surveys.question",
+    "pk": 2,
+    "fields": {
+      "survey": 1,
+      "text": "How likely are you to recommend our service to a friend or colleague?",
+      "question_type": "choice",
+      "order": 2,
+      "is_required": true
+    }
+  },
+  {
+    "model": "surveys.question",
+    "pk": 3,
+    "fields": {
+      "survey": 1,
+      "text": "What could we do to improve your experience?",
+      "question_type": "text",
+      "order": 3,
+      "is_required": false
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 1,
+    "fields": {
+      "question": 2,
+      "text": "Very Likely",
+      "order": 1
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 2,
+    "fields": {
+      "question": 2,
+      "text": "Likely",
+      "order": 2
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 3,
+    "fields": {
+      "question": 2,
+      "text": "Neutral",
+      "order": 3
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 4,
+    "fields": {
+      "question": 2,
+      "text": "Unlikely",
+      "order": 4
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 5,
+    "fields": {
+      "question": 2,
+      "text": "Very Unlikely",
+      "order": 5
+    }
+  },
+  {
+    "model": "surveys.question",
+    "pk": 4,
+    "fields": {
+      "survey": 2,
+      "text": "How satisfied are you with your current role?",
+      "question_type": "rating",
+      "order": 1,
+      "is_required": true
+    }
+  },
+  {
+    "model": "surveys.question",
+    "pk": 5,
+    "fields": {
+      "survey": 2,
+      "text": "Do you feel your contributions are valued by the team?",
+      "question_type": "choice",
+      "order": 2,
+      "is_required": true
+    }
+  },
+  {
+    "model": "surveys.question",
+    "pk": 6,
+    "fields": {
+      "survey": 2,
+      "text": "What aspect of your job do you enjoy the most?",
+      "question_type": "text",
+      "order": 3,
+      "is_required": false
+    }
+  },
+  {
+    "model": "surveys.question",
+    "pk": 7,
+    "fields": {
+      "survey": 2,
+      "text": "How would you rate the work-life balance?",
+      "question_type": "rating",
+      "order": 4,
+      "is_required": true
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 6,
+    "fields": {
+      "question": 5,
+      "text": "Strongly Agree",
+      "order": 1
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 7,
+    "fields": {
+      "question": 5,
+      "text": "Agree",
+      "order": 2
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 8,
+    "fields": {
+      "question": 5,
+      "text": "Neutral",
+      "order": 3
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 9,
+    "fields": {
+      "question": 5,
+      "text": "Disagree",
+      "order": 4
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 10,
+    "fields": {
+      "question": 5,
+      "text": "Strongly Disagree",
+      "order": 5
+    }
+  },
+  {
+    "model": "surveys.question",
+    "pk": 8,
+    "fields": {
+      "survey": 3,
+      "text": "How would you rate the quality of our product?",
+      "question_type": "rating",
+      "order": 1,
+      "is_required": true
+    }
+  },
+  {
+    "model": "surveys.question",
+    "pk": 9,
+    "fields": {
+      "survey": 3,
+      "text": "Which feature do you use most frequently?",
+      "question_type": "choice",
+      "order": 2,
+      "is_required": true
+    }
+  },
+  {
+    "model": "surveys.question",
+    "pk": 10,
+    "fields": {
+      "survey": 3,
+      "text": "What new features would you like to see in future updates?",
+      "question_type": "text",
+      "order": 3,
+      "is_required": false
+    }
+  },
+  {
+    "model": "surveys.question",
+    "pk": 11,
+    "fields": {
+      "survey": 3,
+      "text": "How easy was it to get started with our product?",
+      "question_type": "rating",
+      "order": 4,
+      "is_required": true
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 11,
+    "fields": {
+      "question": 9,
+      "text": "Dashboard & Analytics",
+      "order": 1
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 12,
+    "fields": {
+      "question": 9,
+      "text": "Reporting Tools",
+      "order": 2
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 13,
+    "fields": {
+      "question": 9,
+      "text": "Collaboration Features",
+      "order": 3
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 14,
+    "fields": {
+      "question": 9,
+      "text": "Mobile App",
+      "order": 4
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 15,
+    "fields": {
+      "question": 9,
+      "text": "Integrations",
+      "order": 5
+    }
+  }
+]
