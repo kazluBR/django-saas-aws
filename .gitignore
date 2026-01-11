@@ -45,4 +45,5 @@ Thumbs.db
 
 venv/
 db.sqlite3
+backup/
 
