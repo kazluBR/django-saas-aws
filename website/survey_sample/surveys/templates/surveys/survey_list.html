@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Available Surveys</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
+        .survey { border: 1px solid #ddd; padding: 20px; margin: 20px 0; border-radius: 5px; }
+        .survey h2 { margin-top: 0; }
+        .btn { background: #007bff; color: white; padding: 10px 20px; text-decoration: none; 
+               border-radius: 3px; display: inline-block; }
+        .btn:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>Available Surveys</h1>
+    {% for survey in surveys %}
+    <div class="survey">
+        <h2>{{ survey.title }}</h2>
+        <p>{{ survey.description }}</p>
+        <a href="{% url 'survey_detail' survey.pk %}" class="btn">Take Survey</a>
+    </div>
+    {% empty %}
+    <p>No surveys available at the moment.</p>
+    {% endfor %}
+</body>
+</html>

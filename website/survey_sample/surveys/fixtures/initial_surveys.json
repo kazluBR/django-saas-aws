@@ -1,0 +1,472 @@
+[
+  {
+    "model": "surveys.survey",
+    "pk": 1,
+    "fields": {
+      "title": "Customer Satisfaction Survey",
+      "description": "Help us improve our service by sharing your experience with us.",
+      "is_active": true,
+      "created_at": "2024-01-15T10:00:00Z"
+    }
+  },
+  {
+    "model": "surveys.survey",
+    "pk": 2,
+    "fields": {
+      "title": "Employee Engagement Survey",
+      "description": "Your feedback helps us create a better workplace for everyone.",
+      "is_active": true,
+      "created_at": "2024-01-16T10:00:00Z"
+    }
+  },
+  {
+    "model": "surveys.survey",
+    "pk": 3,
+    "fields": {
+      "title": "Product Feedback Survey",
+      "description": "Tell us what you think about our latest product release.",
+      "is_active": true,
+      "created_at": "2024-01-17T10:00:00Z"
+    }
+  },
+  {
+    "model": "surveys.survey",
+    "pk": 4,
+    "fields": {
+      "title": "Travel Preferences Survey",
+      "description": "Help us understand your travel preferences and dream destinations!",
+      "is_active": true,
+      "created_at": "2024-01-18T10:00:00Z"
+    }
+  },
+  {
+    "model": "surveys.question",
+    "pk": 1,
+    "fields": {
+      "survey": 1,
+      "text": "How would you rate your overall experience with our service?",
+      "question_type": "rating",
+      "image": "",
+      "order": 1,
+      "is_required": true
+    }
+  },
+  {
+    "model": "surveys.question",
+    "pk": 2,
+    "fields": {
+      "survey": 1,
+      "text": "How likely are you to recommend our service to a friend or colleague?",
+      "question_type": "choice",
+      "image": "",
+      "order": 2,
+      "is_required": true
+    }
+  },
+  {
+    "model": "surveys.question",
+    "pk": 3,
+    "fields": {
+      "survey": 1,
+      "text": "What could we do to improve your experience?",
+      "question_type": "text",
+      "image": "",
+      "order": 3,
+      "is_required": false
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 1,
+    "fields": {
+      "question": 2,
+      "text": "Very Likely",
+      "image": "",
+      "order": 1
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 2,
+    "fields": {
+      "question": 2,
+      "text": "Likely",
+      "image": "",
+      "order": 2
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 3,
+    "fields": {
+      "question": 2,
+      "text": "Neutral",
+      "image": "",
+      "order": 3
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 4,
+    "fields": {
+      "question": 2,
+      "text": "Unlikely",
+      "image": "",
+      "order": 4
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 5,
+    "fields": {
+      "question": 2,
+      "text": "Very Unlikely",
+      "image": "",
+      "order": 5
+    }
+  },
+  {
+    "model": "surveys.question",
+    "pk": 4,
+    "fields": {
+      "survey": 2,
+      "text": "How satisfied are you with your current role?",
+      "question_type": "rating",
+      "image": "",
+      "order": 1,
+      "is_required": true
+    }
+  },
+  {
+    "model": "surveys.question",
+    "pk": 5,
+    "fields": {
+      "survey": 2,
+      "text": "Do you feel your contributions are valued by the team?",
+      "question_type": "choice",
+      "image": "",
+      "order": 2,
+      "is_required": true
+    }
+  },
+  {
+    "model": "surveys.question",
+    "pk": 6,
+    "fields": {
+      "survey": 2,
+      "text": "What aspect of your job do you enjoy the most?",
+      "question_type": "text",
+      "image": "",
+      "order": 3,
+      "is_required": false
+    }
+  },
+  {
+    "model": "surveys.question",
+    "pk": 7,
+    "fields": {
+      "survey": 2,
+      "text": "How would you rate the work-life balance?",
+      "question_type": "rating",
+      "image": "",
+      "order": 4,
+      "is_required": true
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 6,
+    "fields": {
+      "question": 5,
+      "text": "Strongly Agree",
+      "image": "",
+      "order": 1
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 7,
+    "fields": {
+      "question": 5,
+      "text": "Agree",
+      "image": "",
+      "order": 2
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 8,
+    "fields": {
+      "question": 5,
+      "text": "Neutral",
+      "image": "",
+      "order": 3
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 9,
+    "fields": {
+      "question": 5,
+      "text": "Disagree",
+      "image": "",
+      "order": 4
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 10,
+    "fields": {
+      "question": 5,
+      "text": "Strongly Disagree",
+      "image": "",
+      "order": 5
+    }
+  },
+  {
+    "model": "surveys.question",
+    "pk": 8,
+    "fields": {
+      "survey": 3,
+      "text": "How would you rate the quality of our product?",
+      "question_type": "rating",
+      "image": "",
+      "order": 1,
+      "is_required": true
+    }
+  },
+  {
+    "model": "surveys.question",
+    "pk": 9,
+    "fields": {
+      "survey": 3,
+      "text": "Which feature do you use most frequently?",
+      "question_type": "choice",
+      "image": "",
+      "order": 2,
+      "is_required": true
+    }
+  },
+  {
+    "model": "surveys.question",
+    "pk": 10,
+    "fields": {
+      "survey": 3,
+      "text": "What new features would you like to see in future updates?",
+      "question_type": "text",
+      "image": "",
+      "order": 3,
+      "is_required": false
+    }
+  },
+  {
+    "model": "surveys.question",
+    "pk": 11,
+    "fields": {
+      "survey": 3,
+      "text": "How easy was it to get started with our product?",
+      "question_type": "rating",
+      "image": "",
+      "order": 4,
+      "is_required": true
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 11,
+    "fields": {
+      "question": 9,
+      "text": "Dashboard & Analytics",
+      "image": "",
+      "order": 1
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 12,
+    "fields": {
+      "question": 9,
+      "text": "Reporting Tools",
+      "image": "",
+      "order": 2
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 13,
+    "fields": {
+      "question": 9,
+      "text": "Collaboration Features",
+      "image": "",
+      "order": 3
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 14,
+    "fields": {
+      "question": 9,
+      "text": "Mobile App",
+      "image": "",
+      "order": 4
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 15,
+    "fields": {
+      "question": 9,
+      "text": "Integrations",
+      "image": "",
+      "order": 5
+    }
+  },
+  {
+    "model": "surveys.question",
+    "pk": 12,
+    "fields": {
+      "survey": 4,
+      "text": "Which destination would you most like to visit?",
+      "question_type": "choice",
+      "image": "question_images/travel_destinations.jpg",
+      "order": 1,
+      "is_required": true
+    }
+  },
+  {
+    "model": "surveys.question",
+    "pk": 13,
+    "fields": {
+      "survey": 4,
+      "text": "What type of accommodation do you prefer?",
+      "question_type": "choice",
+      "image": "question_images/accommodation_types.jpg",
+      "order": 2,
+      "is_required": true
+    }
+  },
+  {
+    "model": "surveys.question",
+    "pk": 14,
+    "fields": {
+      "survey": 4,
+      "text": "How would you rate your interest in adventure activities?",
+      "question_type": "rating",
+      "image": "question_images/adventure_activities.jpg",
+      "order": 3,
+      "is_required": true
+    }
+  },
+  {
+    "model": "surveys.question",
+    "pk": 15,
+    "fields": {
+      "survey": 4,
+      "text": "Tell us about your dream vacation experience",
+      "question_type": "text",
+      "image": "",
+      "order": 4,
+      "is_required": false
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 16,
+    "fields": {
+      "question": 12,
+      "text": "Paris, France",
+      "image": "choice_images/paris.jpg",
+      "order": 1
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 17,
+    "fields": {
+      "question": 12,
+      "text": "Tokyo, Japan",
+      "image": "choice_images/tokyo.jpg",
+      "order": 2
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 18,
+    "fields": {
+      "question": 12,
+      "text": "Bali, Indonesia",
+      "image": "choice_images/bali.jpg",
+      "order": 3
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 19,
+    "fields": {
+      "question": 12,
+      "text": "New York, USA",
+      "image": "choice_images/newyork.jpg",
+      "order": 4
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 20,
+    "fields": {
+      "question": 12,
+      "text": "Barcelona, Spain",
+      "image": "choice_images/barcelona.jpg",
+      "order": 5
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 21,
+    "fields": {
+      "question": 13,
+      "text": "Luxury Hotel",
+      "image": "choice_images/luxury_hotel.jpg",
+      "order": 1
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 22,
+    "fields": {
+      "question": 13,
+      "text": "Beach Resort",
+      "image": "choice_images/beach_resort.jpg",
+      "order": 2
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 23,
+    "fields": {
+      "question": 13,
+      "text": "Cozy Airbnb",
+      "image": "choice_images/airbnb.jpg",
+      "order": 3
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 24,
+    "fields": {
+      "question": 13,
+      "text": "Mountain Cabin",
+      "image": "choice_images/mountain_cabin.jpg",
+      "order": 4
+    }
+  },
+  {
+    "model": "surveys.choice",
+    "pk": 25,
+    "fields": {
+      "question": 13,
+      "text": "Boutique Hotel",
+      "image": "choice_images/boutique_hotel.jpg",
+      "order": 5
+    }
+  }
+]
