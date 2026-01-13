@@ -20,8 +20,8 @@
     "typescript": "~5.9.3"
   },
   "dependencies": {
-    "@cdklabs/sbt-aws": "^0.6.13",
-    "aws-cdk-lib": "^2.232.2",
+    "@cdklabs/sbt-aws": "^0.9.4",
+    "aws-cdk-lib": "2.195.0",
     "constructs": "^10.0.0"
   }
 }
