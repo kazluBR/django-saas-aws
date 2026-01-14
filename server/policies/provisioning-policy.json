@@ -1,9 +1,131 @@
 {
   "statements": [
     {
-      "actions": ["*"],
+      "actions": [
+        "cloudformation:CreateStack",
+        "cloudformation:DescribeStacks",
+        "cloudformation:DescribeStackEvents",
+        "cloudformation:DescribeStackResources",
+        "cloudformation:ListStacks",
+        "cloudformation:UpdateStack",
+        "cloudformation:DeleteStack",
+        "cloudformation:Wait"
+      ],
+      "resources": ["*"],
+      "effect": "ALLOW"
+    },
+    {
+      "actions": [
+        "ecs:CreateCluster",
+        "ecs:DeleteCluster",
+        "ecs:RegisterTaskDefinition",
+        "ecs:DescribeTaskDefinition",
+        "ecs:UpdateService",
+        "ecs:DeleteService",
+        "ecs:CreateService",
+        "ecs:DescribeClusters",
+        "ecs:DescribeServices",
+        "ecs:ListServices",
+        "ecs:ListTasks",
+        "ecs:DescribeTasks"
+      ],
+      "resources": ["*"],
+      "effect": "ALLOW"
+    },
+    {
+      "actions": [
+        "elasticloadbalancing:CreateLoadBalancer",
+        "elasticloadbalancing:DescribeLoadBalancers",
+        "elasticloadbalancing:CreateTargetGroup",
+        "elasticloadbalancing:DescribeTargetGroups",
+        "elasticloadbalancing:RegisterTargets",
+        "elasticloadbalancing:DeregisterTargets",
+        "elasticloadbalancing:CreateListener",
+        "elasticloadbalancing:DescribeListeners",
+        "elasticloadbalancing:ModifyListener",
+        "elasticloadbalancing:DeleteListener",
+        "elasticloadbalancing:DeleteTargetGroup",
+        "elasticloadbalancing:DeleteLoadBalancer"
+      ],
+      "resources": ["*"],
+      "effect": "ALLOW"
+    },
+    {
+      "actions": [
+        "ec2:DescribeSubnets",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeVpcs",
+        "ec2:DescribeAccountAttributes"
+      ],
+      "resources": ["*"],
+      "effect": "ALLOW"
+    },
+    {
+      "actions": [
+        "iam:AttachRolePolicy",
+        "iam:CreateRole",
+        "iam:PassRole",
+        "iam:GetRole",
+        "iam:PutRolePolicy",
+        "iam:CreateServiceLinkedRole"
+      ],
+      "resources": ["*"],
+      "effect": "ALLOW"
+    },
+    {
+      "actions": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:DescribeLogGroups",
+        "logs:DescribeLogStreams",
+        "logs:PutLogEvents",
+        "logs:PutRetentionPolicy"
+      ],
+      "resources": ["*"],
+      "effect": "ALLOW"
+    },
+    {
+      "actions": [
+        "ecr:GetAuthorizationToken",
+        "ecr:BatchGetImage",
+        "ecr:GetDownloadUrlForLayer"
+      ],
+      "resources": ["*"],
+      "effect": "ALLOW"
+    },
+    {
+      "actions": ["s3:GetObject"],
+      "resources": ["*"],
+      "effect": "ALLOW"
+    },
+    {
+      "actions": [
+        "rds:CreateDBInstance",
+        "rds:DeleteDBInstance",
+        "rds:DescribeDBInstances",
+        "rds:ModifyDBInstance",
+        "rds:CreateDBSubnetGroup",
+        "rds:DeleteDBSubnetGroup",
+        "rds:DescribeDBSubnetGroups",
+        "rds:ModifyDBSubnetGroup"
+      ],
+      "resources": ["*"],
+      "effect": "ALLOW"
+    },
+    {
+      "actions": [
+        "secretsmanager:CreateSecret",
+        "secretsmanager:DeleteSecret",
+        "secretsmanager:GetSecretValue",
+        "secretsmanager:UpdateSecret",
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:ListSecrets",
+        "secretsmanager:GetRandomPassword",
+        "secretsmanager:PutSecretValue"
+      ],
       "resources": ["*"],
       "effect": "ALLOW"
     }
-]
+  ]
 }

@@ -1,9 +1,87 @@
 {
   "statements": [
     {
-      "actions": ["*"],
+      "actions": [
+        "cloudformation:DeleteStack",
+        "cloudformation:DescribeStacks"
+      ],
+      "resources": ["*"],
+      "effect": "ALLOW"
+    },
+    {
+      "actions": [
+        "ecs:DeleteCluster",
+        "ecs:DeregisterTaskDefinition",
+        "ecs:DeleteService",
+        "ecs:DescribeServices",
+        "ecs:DescribeClusters"
+      ],
+      "resources": ["*"],
+      "effect": "ALLOW"
+    },
+    {
+      "actions": [
+        "elasticloadbalancing:DeleteLoadBalancer",
+        "elasticloadbalancing:DeleteTargetGroup",
+        "elasticloadbalancing:DeleteListener",
+        "elasticloadbalancing:DeregisterTargets",
+        "elasticloadbalancing:DescribeListeners"
+      ],
+      "resources": ["*"],
+      "effect": "ALLOW"
+    },
+    {
+      "actions": [
+        "ec2:DeleteSecurityGroup",
+        "ec2:DeleteNetworkInterface",
+        "ec2:ReleaseAddress"
+      ],
+      "resources": ["*"],
+      "effect": "ALLOW"
+    },
+    {
+      "actions": [
+        "iam:DetachRolePolicy",
+        "iam:DeleteRole",
+        "iam:DeleteRolePolicy"
+      ],
+      "resources": ["*"],
+      "effect": "ALLOW"
+    },
+    {
+      "actions": ["logs:DeleteLogGroup", "logs:DeleteLogStream"],
+      "resources": ["*"],
+      "effect": "ALLOW"
+    },
+    {
+      "actions": [
+        "ecr:DeleteRepository",
+        "ecr:BatchDeleteImage",
+        "ecr:GetAuthorizationToken",
+        "ecr:BatchGetImage",
+        "ecr:GetDownloadUrlForLayer"
+      ],
+      "resources": ["*"],
+      "effect": "ALLOW"
+    },
+    {
+      "actions": [
+        "secretsmanager:GetSecretValue",
+        "secretsmanager:DeleteSecret",
+        "secretsmanager:PutSecretValue"
+      ],
+      "resources": ["*"],
+      "effect": "ALLOW"
+    },
+    {
+      "actions": [
+        "rds:DeleteDBInstance",
+        "rds:DeleteDBSubnetGroup",
+        "rds:DescribeDBInstances",
+        "rds:DescribeDBSubnetGroups"
+      ],
       "resources": ["*"],
       "effect": "ALLOW"
     }
-]
+  ]
 }
