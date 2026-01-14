@@ -8,6 +8,10 @@ jobs:
     runs-on: ubuntu-24.04-arm
     environment: production
 
+    defaults:
+      run:
+        working-directory: server
+
     permissions:
       contents: read
       id-token: write
@@ -27,7 +31,6 @@ jobs:
           python-version: "3.13"
 
       - name: Install dependencies
-        working-directory: server
         run: |
           npm ci
 
@@ -37,7 +40,10 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: us-east-1
 
+      - name: CDK Bootstrap
+        run: |
+          npx cdk bootstrap -c adminEmail=${{ secrets.ADMIN_EMAIL }}
+
       - name: CDK Diff
-        working-directory: server
         run: |
           npx cdk diff --all -c adminEmail=${{ secrets.ADMIN_EMAIL }}
