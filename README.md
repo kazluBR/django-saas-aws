@@ -131,12 +131,14 @@ npx cdk deploy --all -c adminEmail=<admin@example.com>
 
 The project includes a GitHub Actions workflow for automated deployment:
 
-1. Configure repository secrets:
+1. Follow this [doc](https://docs.github.com/en/actions/security-for-github-actions/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services) to configure a github actions OIDC Provider on AWS
+
+2. Configure repository secrets:
 
    - `AWS_ROLE_ARN`: IAM role for OIDC authentication
    - `ADMIN_EMAIL`: Administrator email address
 
-2. Trigger deployment via workflow dispatch
+3. Trigger deployment via workflow dispatch
 
 ## Tenant Provisioning
 
@@ -154,7 +156,7 @@ The `sbt-aws.sh` script provides a CLI for managing tenants and users:
 ### Initial Setup
 
 ```bash
-# Configure the script with your Control Plane stack
+# Configure the script with your Control Plane stack (Use the password received in the admin_email)
 ./scripts/sbt-aws.sh configure ControlPlaneStack <admin_email>
 
 # Refresh authentication tokens
@@ -207,15 +209,8 @@ The `sbt-aws.sh` script provides a CLI for managing tenants and users:
 ```bash
 cd website/survey_sample
 pip install -r requirements.txt
+python manage.py loaddata initial_surveys
 python manage.py runserver
-```
-
-### CDK Development
-
-```bash
-cd server
-npm run watch    # Watch for changes
-npm run test     # Run tests
 ```
 
 ## Cleanup
