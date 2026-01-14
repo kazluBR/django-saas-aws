@@ -1,0 +1,220 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: CloudFormation Template Advanced for Django App
+
+Parameters:
+  TenantName:
+    Type: String
+  SuperUserEmail:
+    Type: String
+  SuperUserPassword:
+    Type: String
+    NoEcho: true
+
+Resources:
+  EcsCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: !Sub "django-${TenantName}-cluster"
+
+  CloudWatchLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/ecs/django-app-${TenantName}"
+      RetentionInDays: 7
+
+  DatabaseSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: !Sub "${TenantName}-database-secret"
+      Description: !Sub "Credentials for the RDS database of ${TenantName}"
+      GenerateSecretString:
+        SecretStringTemplate: !Sub '{"username": "admin", "port": "3306", "host": ""}'
+        GenerateStringKey: "password"
+        PasswordLength: 16
+        ExcludeCharacters: '"@/\'
+
+  DBSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: !Sub "Subnets for RDS of ${TenantName}"
+      SubnetIds:
+        - !ImportValue PrivateSubnet1Id
+        - !ImportValue PrivateSubnet2Id
+
+  AppRdsDatabase:
+    Type: AWS::RDS::DBInstance
+    DeletionPolicy: Delete
+    Properties:
+      Engine: mysql
+      EngineVersion: "8.0"
+      DBInstanceClass: db.t4g.micro
+      AllocatedStorage: 20
+      MaxAllocatedStorage: 100
+      StorageType: gp2
+      PubliclyAccessible: true
+      MultiAZ: false
+      DBInstanceIdentifier: !Sub "app-${TenantName}-database"
+      DBName: !Ref TenantName
+      VPCSecurityGroups:
+        - !ImportValue DatabaseSecurityGroupId
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      MasterUsername: !Sub "{{resolve:secretsmanager:${DatabaseSecret}:SecretString:username}}"
+      MasterUserPassword: !Sub "{{resolve:secretsmanager:${DatabaseSecret}:SecretString:password}}"
+      DeletionProtection: false
+      BackupRetentionPeriod: 7
+      DBParameterGroupName: default.mysql8.0
+
+  DatabaseSecretAttachment:
+    Type: AWS::SecretsManager::SecretTargetAttachment
+    Properties:
+      SecretId: !Ref DatabaseSecret
+      TargetId: !Ref AppRdsDatabase
+      TargetType: AWS::RDS::DBInstance
+
+  AppTaskRole:
+    Type: AWS::IAM::Role
+    DependsOn:
+      - AppRdsDatabase
+    Properties:
+      RoleName: !Sub "ecs-task-role-${TenantName}"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: !Sub "ecs-task-policy-${TenantName}"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - secretsmanager:GetSecretValue
+                  - secretsmanager:DescribeSecret
+                Resource: !Ref DatabaseSecret
+
+  TaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    DependsOn:
+      - AppRdsDatabase
+    Properties:
+      Family: !Sub "django-app-task-definition-${TenantName}"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      Cpu: "256"
+      Memory: "512"
+      RuntimePlatform:
+        CpuArchitecture: ARM64
+        OperatingSystemFamily: LINUX
+      ExecutionRoleArn: !ImportValue TaskExecutionRoleArn
+      TaskRoleArn: !GetAtt AppTaskRole.Arn
+      ContainerDefinitions:
+        - Name: !Sub "django-container-${TenantName}"
+          Image: !ImportValue AppEcrRepositoryUri
+          Memory: 512
+          Cpu: 256
+          Essential: true
+          PortMappings:
+            - ContainerPort: 80
+          Command:
+            [
+              "sh",
+              "-c",
+              "python manage.py migrate && python manage.py createsuperuser --noinput || true && python manage.py runserver 0.0.0.0:80",
+            ]
+          Environment:
+            - Name: TENANT_NAME
+              Value: !Ref TenantName
+            - Name: DJANGO_SUPERUSER_USERNAME
+              Value: "admin"
+            - Name: DJANGO_SUPERUSER_EMAIL
+              Value: !Ref SuperUserEmail
+            - Name: DJANGO_SUPERUSER_PASSWORD
+              Value: !Ref SuperUserPassword
+            - Name: TIER
+              Value: "advanced"
+            - Name: DJANGO_SETTINGS_MODULE
+              Value: "survey_project.production"
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: !Ref CloudWatchLogGroup
+              awslogs-region: !Ref "AWS::Region"
+              awslogs-stream-prefix: "django"
+
+  LoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: !Sub "load-balancer-${TenantName}"
+      Scheme: internet-facing
+      Type: application
+      IpAddressType: ipv4
+      SecurityGroups:
+        - !ImportValue AppSecurityGroupId
+      Subnets:
+        - !ImportValue PublicSubnet1Id
+        - !ImportValue PublicSubnet2Id
+
+  TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: !Sub "target-group-${TenantName}"
+      Port: 80
+      Protocol: HTTP
+      VpcId: !ImportValue VpcId
+      TargetType: ip
+      LoadBalancerArns:
+        - !Ref LoadBalancer
+
+  Listener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      LoadBalancerArn: !Ref LoadBalancer
+      Protocol: HTTP
+      Port: 80
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref TargetGroup
+
+  EcsService:
+    Type: AWS::ECS::Service
+    DependsOn:
+      - AppRdsDatabase
+    Properties:
+      ServiceName: !Sub "service-${TenantName}"
+      Cluster: !Ref EcsCluster
+      DesiredCount: 1
+      TaskDefinition: !Ref TaskDefinition
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          Subnets:
+            - !ImportValue PublicSubnet1Id
+            - !ImportValue PublicSubnet2Id
+          SecurityGroups:
+            - !ImportValue AppSecurityGroupId
+          AssignPublicIp: ENABLED
+      LoadBalancers:
+        - ContainerName: !Sub "django-container-${TenantName}"
+          ContainerPort: 80
+          TargetGroupArn: !Ref TargetGroup
+
+Outputs:
+  ALBDnsName:
+    Description: "DNS Name of the Application Load Balancer"
+    Value: !GetAtt LoadBalancer.DNSName
+    Export:
+      Name: !Sub "ALBDnsName-${TenantName}"
+  DatabaseEndpoint:
+    Description: "RDS Database Endpoint"
+    Value: !GetAtt AppRdsDatabase.Endpoint.Address
+    Export:
+      Name: !Sub "DatabaseEndpoint-${TenantName}"
+  DatabaseSecretName:
+    Description: "Database Secret Name"
+    Value: !Sub "${TenantName}-database-secret"
+    Export:
+      Name: !Sub "DatabaseSecretName-${TenantName}"

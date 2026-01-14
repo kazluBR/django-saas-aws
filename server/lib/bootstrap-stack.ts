@@ -26,7 +26,7 @@ export class BootstrapStack extends cdk.Stack {
     super(scope, id, props);
 
     this.appDockerImage = new ecr_assets.DockerImageAsset(this, "AppImage", {
-      directory: path.join(__dirname, "../../website"),
+      directory: path.join(__dirname, "../../website/survey_sample"),
     });
 
     this.appSecurityGroup = new ec2.SecurityGroup(this, "AppSecurityGroup", {
