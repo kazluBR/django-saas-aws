@@ -3,6 +3,8 @@ import * as ecr_assets from "aws-cdk-lib/aws-ecr-assets";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import * as ecs from "aws-cdk-lib/aws-ecs";
 import * as iam from "aws-cdk-lib/aws-iam";
+import * as s3 from "aws-cdk-lib/aws-s3";
+import * as s3deploy from "aws-cdk-lib/aws-s3-deployment";
 import * as rds from "aws-cdk-lib/aws-rds";
 import { Construct } from "constructs";
 import * as path from "path";
@@ -19,6 +21,7 @@ export class BootstrapStack extends cdk.Stack {
   public readonly taskExecutionRole: iam.Role;
   public readonly taskAppRole: iam.Role;
   public readonly ecsPoolCluster: ecs.Cluster;
+  public readonly s3TemplateBucket: s3.Bucket;
   public readonly dbPoolSecurityGroup: ec2.SecurityGroup;
   public readonly dbPoolDatabase: rds.DatabaseInstance;
 
@@ -26,7 +29,7 @@ export class BootstrapStack extends cdk.Stack {
     super(scope, id, props);
 
     this.appDockerImage = new ecr_assets.DockerImageAsset(this, "AppImage", {
-      directory: path.join(__dirname, "../../website"),
+      directory: path.join(__dirname, "../../website/survey_sample"),
     });
 
     this.appSecurityGroup = new ec2.SecurityGroup(this, "AppSecurityGroup", {
@@ -58,6 +61,18 @@ export class BootstrapStack extends cdk.Stack {
 
     this.taskAppRole = new iam.Role(this, "AppTaskRole", {
       assumedBy: new iam.ServicePrincipal("ecs-tasks.amazonaws.com"),
+    });
+
+    this.s3TemplateBucket = new s3.Bucket(this, "TenantTemplatesBucket", {
+      bucketName: `tenant-templates-bucket-${this.account}-${this.region}`,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+    });
+
+    new s3deploy.BucketDeployment(this, "DeployTenantTemplates", {
+      sources: [s3deploy.Source.asset(path.join(__dirname, "../templates"))],
+      destinationBucket: this.s3TemplateBucket,
     });
 
     this.ecsPoolCluster = new ecs.Cluster(this, "EcsPoolCluster", {
@@ -159,6 +174,12 @@ export class BootstrapStack extends cdk.Stack {
       value: this.taskAppRole.roleArn,
       description: "ARN of App Task Role",
       exportName: "AppTaskRoleArn",
+    });
+
+    new cdk.CfnOutput(this, "TenantTemplatesBucketName", {
+      value: this.s3TemplateBucket.bucketName,
+      description: "Name of tenant templates bucket",
+      exportName: "TenantTemplatesBucketName",
     });
 
     new cdk.CfnOutput(this, "EcsPoolClusterName", {
