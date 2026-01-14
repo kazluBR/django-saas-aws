@@ -1,4 +1,4 @@
-name: Deploy CDK (ARM64)
+name: Deploy
 
 on:
   workflow_dispatch:
@@ -6,6 +6,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-24.04-arm
+    environment: production
 
     permissions:
       contents: read
