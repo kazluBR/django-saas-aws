@@ -44,6 +44,6 @@ jobs:
         run: |
           npx cdk bootstrap -c adminEmail=${{ secrets.ADMIN_EMAIL }}
 
-      - name: CDK Diff
+      - name: CDK Deploy
         run: |
-          npx cdk diff --all -c adminEmail=${{ secrets.ADMIN_EMAIL }}
+          npx cdk deploy --all --require-approval never -c adminEmail=${{ secrets.ADMIN_EMAIL }}
