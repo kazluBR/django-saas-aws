@@ -43,7 +43,7 @@ Resources:
             [
               "sh",
               "-c",
-              "python manage.py migrate && python manage.py createsuperuser --noinput || true && python manage.py runserver 0.0.0.0:80",
+              "python manage.py migrate && python manage.py loaddata initial_surveys && python manage.py createsuperuser --noinput || true && python manage.py runserver 0.0.0.0:80",
             ]
           Environment:
             - Name: TENANT_NAME

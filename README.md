@@ -46,14 +46,15 @@ The solution consists of four main components:
 │   │   ├── app-plane-stack.ts
 │   │   ├── bootstrap-stack.ts
 │   │   └── control-plane-stack.ts
-│   ├── policies/              # IAM policies for provisioning
+│   ├── policies/              # IAM policies for (de)provisioning
 │   ├── templates/             # CloudFormation templates for tenants
 │   └── codebuild/             # Docker image for CodeBuild
-├── scripts/                   # Provisioning/deprovisioning scripts
+├── scripts/                   # Bash scripts
+|   ├── cleanup.sh
 │   ├── provisioning.sh
 │   ├── deprovisioning.sh
 │   └── sbt-aws.sh
-├── website/                   # Django application
+├── website/                   # Django application sample
 │   └── survey_sample/
 │       ├── survey_project/    # Django project settings
 │       ├── surveys/           # Survey app
@@ -90,7 +91,6 @@ The solution consists of four main components:
 ```bash
 cd server
 npm install
-npm run build
 ```
 
 ### 2. Configure AWS Credentials
@@ -124,7 +124,7 @@ npx cdk deploy --all --require-approval never -c adminEmail=<your-email>
 ```bash
 cd server
 npm run build
-npx cdk deploy --all -c adminEmail=<admin@example.com>
+npx cdk deploy --all --require-approval never -c adminEmail=<admin@example.com>
 ```
 
 ### CI/CD with GitHub Actions
@@ -234,7 +234,7 @@ This script will:
 - Automated tenant provisioning and deprovisioning
 - Tier-based resource allocation
 - Event-driven lifecycle management
-- Infrastructure as Code with AWS CDK
+- Infrastructure as Code with AWS CDK and Cloudformation
 - Containerized Django application
 - VPC networking with NAT instances for cost optimization
 
